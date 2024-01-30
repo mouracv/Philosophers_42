@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/01/29 17:26:29 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:12:39 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,39 @@
 // At this point we make the philo sleep using another time the usleep function.
 
 
-
-
-int    init_struct(char **argv, int argc)
+//Devolve o tempo em milisegundos
+size_t	get_time(void)
 {
-    struct timeval tv;
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL))
+		return (0);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
+
+int     init_philosophers(t_philo   *node)
+{
+    int i = 1;
     
-    data()->n_philo = ft_atoi(argv[1]);
-    if (data()->n_philo > 200)
-        return (syntax(3), 1);
-    data()->time_to_die = (size_t) ft_atoi(argv[2]);
-    data()->time_to_eat = (size_t) ft_atoi(argv[3]);
-    data()->time_to_sleep = (size_t) ft_atoi(argv[4]);
-    data()->start_time = gettimeofday(&tv, NULL);
-    if (data()->n_philo <= 0 || !data()->time_to_die || !data()->time_to_eat || !data()->time_to_sleep)
-        return (syntax(4), 1);
-    if (argv == 6)
-        data()->food_need = ft_atoi(argv[5]);
-    else
-        data()->food_need = -1;
-    
+    node[0].status = 0;
+    node[0].last_meal_time = 0;
+    node[0].r_fork = &data()->forks[0];
+    node[0].r_fork = &data()->forks[data()->n_philo - 1];
+    while (i < data()->n_philo)
+    {
+        node[i].status = 0;
+        node[i].last_meal_time = 0;
+        node[i].r_fork = &data()->forks[i];
+        node[i].r_fork = &data()->forks[data()->n_philo - 1];
+    }
+}
+
+
+
+
+int box_memore(void)
+{
     data()->forks = ft_calloc(data()->n_philo, sizeof(pthread_mutex_t));
     if (!data()->forks)
         return (syntax(5), 1);
@@ -71,6 +84,28 @@ int    init_struct(char **argv, int argc)
     data()->tid = ft_calloc(data()->n_philo, sizeof(pthread_t));
     if (!data()->tid)
         return (free(data()->forks), free(data()->philos), syntax(5), 1);
+    
+    return (0);
+}
+
+int    init_struct(char **argv, int argc)
+{
+    data()->n_philo = ft_atoi(argv[1]);
+    if (data()->n_philo > 200)
+        return (syntax(3), 1);
+    data()->time_to_die = (size_t) ft_atoi(argv[2]);
+    data()->time_to_eat = (size_t) ft_atoi(argv[3]);
+    data()->time_to_sleep = (size_t) ft_atoi(argv[4]);
+    data()->start_time = get_time();
+    if (data()->n_philo <= 0 || !data()->time_to_die || !data()->time_to_eat || !data()->time_to_sleep)
+        return (syntax(4), 1);
+    if (argv == 6)
+        data()->food_need = ft_atoi(argv[5]);
+    else
+        data()->food_need = -1;
+    if (box_memore())
+        return (1);
+    return (0);
 }
 
 
@@ -90,6 +125,11 @@ int main(int argc, char **argv)
 {
     if (check_args(argc, argv) || init_struct(argv, argc))
         return (EXIT_FAILURE); 
+    if (1)
+    {
+        /* code */
+    }
+    
     // pthread_mutex_init();
     // if (argc != 5 || argc != 6)
     //     return(syntax(), 0);
