@@ -6,18 +6,11 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:59:52 by aleperei          #+#    #+#             */
-/*   Updated: 2024/01/29 16:36:15 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:27:10 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-t_box  *data(void)
-{
-    static t_box geral;
-    
-    return (&geral);
-}
 
 void	*ft_calloc(size_t n, size_t size)
 {
