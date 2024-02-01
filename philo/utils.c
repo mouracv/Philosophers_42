@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:59:52 by aleperei          #+#    #+#             */
-/*   Updated: 2024/01/31 15:27:10 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:22:18 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	syntax(int flag)
 	if (flag == 2)
 		write(2, "Syntax error: Only digits are allowed\n", 39);
 	if (flag == 3)
-		write(2, "Syntax error: Too much philosophers\n", 37);
+		write(2, "Syntax error: Number of philosophers is not valid\n", 37);
 	if (flag == 4)
 		write(2, "Syntax error: Arguments has to be bigger than 0\n", 49);
 	if (flag == 5)

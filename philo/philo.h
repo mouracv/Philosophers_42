@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/01/31 16:26:44 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:23:08 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ typedef struct s_box;
 typedef struct s_philo
 {
     int                  id;
-    int                 time_to_die;
-    int                 last_meal_time;
+    int                  dead;
+    // int                 time_to_die;
+    int                 food_eaten;
+    size_t                 last_meal_time;
     int                 status;
     pthread_mutex_t   *r_fork;
     pthread_mutex_t   *l_fork;
@@ -42,6 +44,7 @@ typedef struct s_box
     
     int     n_philo;
     int     food_need;
+    int     dead;
 
     size_t  time_to_die;    
     size_t  time_to_eat;    
@@ -74,7 +77,7 @@ void *routine(void *node);
 //UTILS
 size_t  get_time(void);
 int     ft_isdigit(int nb);
-size_t	ft_usleep(size_t time);
+void	ft_usleep(size_t time);
 int     ft_atoi(const char *nptr);
 void    *ft_calloc(size_t n, size_t size);
 
