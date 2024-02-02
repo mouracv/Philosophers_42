@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/01 16:05:48 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:27:28 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_usleep(size_t time)
 {
 	size_t	start;
 	start = get_time();
-	while ((get_time() - start) < time)
+	while ((get_time() - start) < time && end(&data()->end, &data()->dead))
 		usleep(time / 10);
 }
 
@@ -50,6 +50,7 @@ int	init_mutex(void)
 		i++;
 	}
 	pthread_mutex_init(&data()->wrt, NULL);
+	pthread_mutex_init(&data()->end, NULL);
 	return (0);
 }
 
@@ -104,14 +105,14 @@ int	box_memory(void)
 
 int	init_struct(char **argv, int argc)
 {
+	data()->dead = 1;
 	data()->n_philo = ft_atoi(argv[1]);
 	if (data()->n_philo > 200)
 		return (syntax(3), 1);
 	data()->time_to_die = (size_t)ft_atoi(argv[2]);
 	data()->time_to_eat = (size_t)ft_atoi(argv[3]);
 	data()->time_to_sleep = (size_t)ft_atoi(argv[4]);
-	data()->dead = 1;
-	if (argv == 6)
+	if (argc == 6)
 		data()->food_need = ft_atoi(argv[5]);
 	else
 		data()->food_need = -1;

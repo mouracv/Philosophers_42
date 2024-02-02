@@ -6,47 +6,39 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/01 16:23:37 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:33:19 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "philo.h"
 
-
-void    clear_mutex(void)
+int    end(pthread_mutex_t *end, int   *status)
 {
-    int i = 0;
+    int tmp = 0;
     
-    while (++i < data()->n_philo)
-        pthread_mutex_destroy(&data()->forks[i]);
-    
-    pthread_mutex_destroy(&data()->wrt);
-    
-}
-
-void    quit(void)
-{
-    clear_mutex();
-    if (data()->philos)
-        free(data()->philos);
-    if (data()->forks)
-        free(data()->forks);
-    if (data()->tid)
-        free(data()->tid);
+    pthread_mutex_lock(end);
+    tmp = *status;
+    pthread_mutex_unlock(end);
+    return (tmp);
 }
 
 //monitor
 //o philo so pode morrer se ficar muito tempo sem comer ou se comer tudo
-
 void    print_status(char *str, t_philo *node)
 {
+    if (!end(&data()->end, &data()->dead))
+        return ;
+    
     pthread_mutex_lock(&data()->wrt);
-    printf("%zu Philo %d %s\n", get_time(), node->id, str);
+    printf("%zu Philo %d %s\n", (get_time() - data()->start_time), node->id, str);
+    // printf("%zu %d %s\n", (get_time() - data()->start_time), node->id, str);
     pthread_mutex_unlock(&data()->wrt);
 }
 
 void eating(t_philo *node)
 {
+    if (!end(&data()->end, &data()->dead))
+        return ;
     pthread_mutex_lock(node->r_fork);
     print_status("taken rigth fork", node);
     pthread_mutex_lock(node->l_fork);
@@ -59,46 +51,6 @@ void eating(t_philo *node)
     pthread_mutex_unlock(node->l_fork);
 }
 
-void go_to_grave(t_philo *node)
-{
-    int i = 0;
-
-    while (i < data()->n_philo)
-    {
-        if ((get_time - node[i].last_meal_time) >= data()->time_to_die)
-        {
-            data()->dead = 0;
-            print_status("died in vain", &node[i]);
-            break;
-        }
-        i++;
-    }
-    return ;
-}
-
-int full_philo(t_philo *node)
-{
-    int times = 0;
-    if (data()->food_need < 0)
-        return (0);
-    while (data()->food_need && node[times].food_eaten >= data()->food_need)
-        times++;
-    if (times == data()->n_philo)
-        return (1);
-    
-    return (0);
-}
-
-void    cell_guard(void)
-{
-    while (data()->dead)
-    {
-        if (full_philo(data()->philos))
-            break;
-        go_to_grave(data()->philos);   
-    }
-    
-}
 
 void *routine(void  *node)
 {
@@ -109,29 +61,21 @@ void *routine(void  *node)
         print_status("taken rigth fork", philo);
         ft_usleep(data()->time_to_die);
     }
-    while (philo->dead)
+    while (end(&data()->end, &data()->dead))
     {
         if ((philo->id % 2) == 0)
             usleep(100);
         
-        // if (data()->food_need && data()->food_need >= philo->food_eaten)
-        // {
-        //     /*Deve acabar*/
-        // }
+        eating(philo);        
         
-        eating(philo);
         print_status("is sleeping", node);
         ft_usleep(data()->time_to_sleep);
-        print_status("is think", node);
-        // ft_usleep(data()->time_to_die);
-        
+        print_status("is thinking", node);
+                
     }
     
     return (NULL); 
 }
-
-
-
 
 
 int main(int argc, char **argv)
@@ -142,7 +86,7 @@ int main(int argc, char **argv)
         return (EXIT_FAILURE); 
     
     cell_guard();
-
+    quit();
     return (0);
 }
 

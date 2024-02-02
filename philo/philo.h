@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/01 16:23:08 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:52:58 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <pthread.h>
 
 
-typedef struct s_box;
-
 typedef struct s_philo
 {
     int                  id;
@@ -34,7 +32,6 @@ typedef struct s_philo
     pthread_mutex_t   *r_fork;
     pthread_mutex_t   *l_fork;
           
-    t_box  *data;
 }               t_philo;
 
 typedef struct s_box
@@ -53,6 +50,7 @@ typedef struct s_box
 
     pthread_mutex_t   *forks;
     pthread_mutex_t   wrt;
+    pthread_mutex_t   end;
     
 }               t_box;
 
@@ -72,6 +70,11 @@ int     init_struct(char **argv, int argc);
 
 //MANAGEMENT
 void *routine(void *node);
+void go_to_grave(t_philo *node);
+int full_philo(t_philo *node);
+void    cell_guard(void);
+void    print_status(char *str, t_philo *node);
+int    end(pthread_mutex_t *end, int   *status);
 
 
 //UTILS
@@ -80,5 +83,9 @@ int     ft_isdigit(int nb);
 void	ft_usleep(size_t time);
 int     ft_atoi(const char *nptr);
 void    *ft_calloc(size_t n, size_t size);
+
+//FRRE AND DESTROY THREADS
+void    clear_mutex(void);
+void    quit(void);
 
 #endif

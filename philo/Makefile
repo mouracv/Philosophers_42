@@ -6,7 +6,7 @@
 #    By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 14:05:13 by aleperei          #+#    #+#              #
-#    Updated: 2024/01/31 16:29:26 by aleperei         ###   ########.fr        #
+#    Updated: 2024/02/02 12:20:34 by aleperei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Werror -Wextra -g -pthread
 
 RM = rm -f
 
-SRCS = philo.c utils.c iniciate.c \
+SRCS = philo.c utils.c iniciate.c  verify_thread.c \
 
 OJBS = $(SRCS:.c=.o)
 
