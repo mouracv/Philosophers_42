@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:59:52 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/01 11:22:18 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:02:35 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	*ft_calloc(size_t n, size_t size)
 {
 	void	*dup;
 	size_t	total;
-
 
 	total = n * size;
 	dup = malloc(total);
@@ -37,18 +36,21 @@ int	ft_isdigit(int nb)
 void	syntax(int flag)
 {
 	if (!flag)
-		write(2, "Syntax error: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n", 128);
+		write(2,"Syntax error: ./philo number_of_
+				philosophers time_to_die time_to_eat time_to_sleep
+						[number_of_times_each_philosopher_must_eat].\n", 128);
 	if (flag == 1)
-		write(2, "Syntax error: All the number has to be positive\n", 49);
+		write(2, "Syntax error: All the number has to be positive.\n", 49);
 	if (flag == 2)
-		write(2, "Syntax error: Only digits are allowed\n", 39);
+		write(2, "Syntax error: Only digits are allowed.\n", 39);
 	if (flag == 3)
-		write(2, "Syntax error: Number of philosophers is not valid\n", 37);
+		write(2, "Syntax error: Number of philosophers is not valid.\n", 37);
 	if (flag == 4)
-		write(2, "Syntax error: Arguments has to be bigger than 0\n", 49);
+		write(2, "Syntax error: Arguments has to be bigger than 0.\n", 49);
 	if (flag == 5)
-		write(2, "Erroe: malloc\n", 15);
-
+		write(2, "Error: malloc.\n", 15);
+	if (flag == 6)
+		write(2, "Syntax error: Argument too big.\n", 32);
 }
 
 int	check_args(int ac, char **av)
@@ -73,6 +75,8 @@ int	check_args(int ac, char **av)
 				return (syntax(2), 1);
 			sub++;
 		}
+		if (ft_strlen(*str) > 10)
+			return (syntax(6), 1);
 		str++;
 	}
 	return (0);

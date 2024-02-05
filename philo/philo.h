@@ -6,86 +6,76 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/02 15:52:58 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:05:54 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <pthread.h>
 # include <stdio.h>
-# include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
-# include <pthread.h>
-
+# include <unistd.h>
 
 typedef struct s_philo
 {
-    int                  id;
-    int                  dead;
-    // int                 time_to_die;
-    int                 food_eaten;
-    size_t                 last_meal_time;
-    int                 status;
-    pthread_mutex_t   *r_fork;
-    pthread_mutex_t   *l_fork;
-          
-}               t_philo;
+	int				id;
+	int				food_eaten;
+	size_t			last_meal_time;
+	int				status;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*l_fork;
+
+}					t_philo;
 
 typedef struct s_box
 {
-    t_philo     *philos;
-    pthread_t   *tid;
-    
-    int     n_philo;
-    int     food_need;
-    int     dead;
+	t_philo			*philos;
+	pthread_t		*tid;
 
-    size_t  time_to_die;    
-    size_t  time_to_eat;    
-    size_t  time_to_sleep;    
-    size_t  start_time;    
+	int				n_philo;
+	int				food_need;
+	int				dead;
 
-    pthread_mutex_t   *forks;
-    pthread_mutex_t   wrt;
-    pthread_mutex_t   end;
-    
-}               t_box;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			start_time;
 
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	wrt;
+}					t_box;
 
-t_box   *data(void);
+// int    end(pthread_mutex_t *end, int   *status);
 
-//CHECK ARGUMENTS AND ERROR
-void    syntax(int flag);
-int     check_args(int ac, char **av);
+// CHECK ARGUMENTS AND ERROR
+void				syntax(int flag);
+int					check_args(int ac, char **av);
 
-//INICIATE
-int     init_mutex(void);
-int     box_memory(void);
-int     init_philosophers(t_philo   *node);
-int     init_struct(char **argv, int argc);
+// INICIATE
+t_box				*data(void);
+int					case_one(t_philo *node);
+int					init_philosophers(t_philo *node);
+int					init_struct(char **argv, int argc);
 
+// MANAGEMENT
+void				cell_guard(void);
+void				*routine(void *node);
+void				print_status(char *str, t_philo *node);
 
-//MANAGEMENT
-void *routine(void *node);
-void go_to_grave(t_philo *node);
-int full_philo(t_philo *node);
-void    cell_guard(void);
-void    print_status(char *str, t_philo *node);
-int    end(pthread_mutex_t *end, int   *status);
+// UTILS
+size_t				get_time(void);
+int					ft_isdigit(int nb);
+void				ft_usleep(size_t time);
+int					ft_atoi(const char *nptr);
+size_t				ft_strlen(const char *str);
+void				*ft_calloc(size_t n, size_t size);
 
-
-//UTILS
-size_t  get_time(void);
-int     ft_isdigit(int nb);
-void	ft_usleep(size_t time);
-int     ft_atoi(const char *nptr);
-void    *ft_calloc(size_t n, size_t size);
-
-//FRRE AND DESTROY THREADS
-void    clear_mutex(void);
-void    quit(void);
+// FRRE AND DESTROY THREADS
+void				quit(void);
+void				clear_mutex(void);
 
 #endif

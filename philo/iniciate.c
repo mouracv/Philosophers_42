@@ -6,40 +6,21 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/02 17:27:28 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:15:44 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//Funcao que  contem a miha struct
-t_box  *data(void)
+// Funcao que  contem a minha struct
+t_box	*data(void)
 {
-    static t_box geral;
-    
-    return (&geral);
+	static t_box	geral;
+
+	return (&geral);
 }
 
-//Return the time in milliseconds
-size_t	get_time(void)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL))
-		return (0);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-//Imitation of usleep
-void	ft_usleep(size_t time)
-{
-	size_t	start;
-	start = get_time();
-	while ((get_time() - start) < time && end(&data()->end, &data()->dead))
-		usleep(time / 10);
-}
-
-int	init_mutex(void)
+static int	init_mutex(void)
 {
 	int	i;
 
@@ -50,11 +31,10 @@ int	init_mutex(void)
 		i++;
 	}
 	pthread_mutex_init(&data()->wrt, NULL);
-	pthread_mutex_init(&data()->end, NULL);
+	// pthread_mutex_init(&data()->end, NULL);
 	return (0);
 }
 
-// colocar o i como argumento para usar ele como index
 int	init_philosophers(t_philo *node)
 {
 	int	i;
@@ -63,17 +43,12 @@ int	init_philosophers(t_philo *node)
 	data()->start_time = get_time();
 	if (data()->n_philo == 1)
 	{
-		node[0].id = 0;
-		node[0].r_fork = &data()->forks[0];
-		node[0].last_meal_time = get_time();
-		if (pthread_create(&data()->tid[0], NULL, &routine, &data()->philos[0]))
-			return (free(data()->forks), free(data()->philos),
-				free(data()->tid), syntax(5), 1);
+		if (case_one(node))
+			return (1);
 		return (0);
 	}
 	while (++i < (data()->n_philo))
 	{
-		node[i].dead = 1;
 		node[i].id = i + 1;
 		node[i].r_fork = &data()->forks[i];
 		if (node[i].id == data()->n_philo)
@@ -88,8 +63,8 @@ int	init_philosophers(t_philo *node)
 	return (0);
 }
 
-//allocate memory for the forks, philos and tid
-int	box_memory(void)
+// allocate memory for the forks, philos and tid
+static int	box_memory(void)
 {
 	data()->forks = ft_calloc(data()->n_philo, sizeof(pthread_mutex_t));
 	if (!data()->forks)
@@ -119,7 +94,6 @@ int	init_struct(char **argv, int argc)
 	if (!data()->n_philo || !data()->time_to_die || !data()->time_to_eat
 		|| !data()->time_to_sleep || !data()->food_need)
 		return (syntax(4), 1);
-
 	if (box_memory() || init_mutex())
 		return (1);
 	return (0);
