@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:59:52 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 17:25:36 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:27:49 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ void	*ft_calloc(size_t n, size_t size)
 	return (dup);
 }
 
+
+
+
 int	ft_isdigit(int nb)
 {
-	if (nb >= 48 && nb <= 57)
+
+	
+	if (nb >= 48   &&     nb <= 57)
 		return (1);
 	else
 		return (0);
@@ -51,6 +56,14 @@ void	syntax(int flag)
 		write(2, "Error: malloc.\n", 15);
 	if (flag == 6)
 		write(2, "Syntax error: Argument too big.\n", 32);
+
+
+
+
+
+
+
+		
 }
 
 int	check_args(int ac, char **av)
