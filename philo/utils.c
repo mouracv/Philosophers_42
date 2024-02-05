@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:59:52 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 17:02:35 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:25:36 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	ft_isdigit(int nb)
 void	syntax(int flag)
 {
 	if (!flag)
-		write(2,"Syntax error: ./philo number_of_
-				philosophers time_to_die time_to_eat time_to_sleep
-						[number_of_times_each_philosopher_must_eat].\n", 128);
+		write(2, "Syntax error: ./philo number_of_philosophers \
+		time_to_die time_to_eat time_to_sleep \
+		[number_of_times_each_philosopher_must_eat].\n", 128);
 	if (flag == 1)
 		write(2, "Syntax error: All the number has to be positive.\n", 49);
 	if (flag == 2)

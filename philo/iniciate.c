@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 17:15:44 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:23:59 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	init_mutex(void)
 		i++;
 	}
 	pthread_mutex_init(&data()->wrt, NULL);
-	// pthread_mutex_init(&data()->end, NULL);
 	return (0);
 }
 
@@ -66,13 +65,13 @@ int	init_philosophers(t_philo *node)
 // allocate memory for the forks, philos and tid
 static int	box_memory(void)
 {
-	data()->forks = ft_calloc(data()->n_philo, sizeof(pthread_mutex_t));
+	(data()->forks) = ft_calloc(data()->n_philo, sizeof(pthread_mutex_t));
 	if (!data()->forks)
 		return (syntax(5), 1);
-	data()->philos = ft_calloc(data()->n_philo, sizeof(t_philo));
+	(data()->philos) = ft_calloc(data()->n_philo, sizeof(t_philo));
 	if (!data()->forks)
 		return (free(data()->forks), syntax(5), 1);
-	data()->tid = ft_calloc(data()->n_philo, sizeof(pthread_t));
+	(data()->tid) = ft_calloc(data()->n_philo, sizeof(pthread_t));
 	if (!data()->tid)
 		return (free(data()->forks), free(data()->philos), syntax(5), 1);
 	return (0);
