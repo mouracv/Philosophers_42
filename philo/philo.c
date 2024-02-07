@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 17:01:20 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/07 11:18:23 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_status(char *str, t_philo *node)
 
 static int	sleeping_philo(t_philo *node)
 {
-	if (data()->time_to_sleep >= data()->time_to_die)
+	if (!data()->dead || (data()->time_to_sleep >= data()->time_to_die))
 		return (1);
 	print_status("is sleeping", node);
 	ft_usleep(data()->time_to_sleep);
@@ -86,5 +86,6 @@ int	main(int argc, char **argv)
 //  has eaten at least 7 times.
 // ./philo 4 410 200 200 - No Philosopher should die.
 // ./philo 4 310 200 100 - One Philosopher should die.
+
 // ./philo 4 500 200 2147483647
 // ./philo 4 214748364732 200 200
