@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 17:05:54 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:07:57 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct s_box
 
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	wrt;
+	pthread_mutex_t	end;
+	pthread_mutex_t	food;
 }					t_box;
 
 // int    end(pthread_mutex_t *end, int   *status);
@@ -65,6 +67,7 @@ int					init_struct(char **argv, int argc);
 void				cell_guard(void);
 void				*routine(void *node);
 void				print_status(char *str, t_philo *node);
+int					end(pthread_mutex_t *end, int *status);
 
 // UTILS
 size_t				get_time(void);
@@ -76,6 +79,5 @@ void				*ft_calloc(size_t n, size_t size);
 
 // FRRE AND DESTROY THREADS
 void				quit(void);
-void				clear_mutex(void);
 
 #endif

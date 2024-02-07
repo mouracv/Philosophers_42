@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/07 11:18:23 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:18:31 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_status(char *str, t_philo *node)
 {
-	if (!data()->dead)
+	if (!end(&data()->end, &data()->dead))
 		return ;
 	pthread_mutex_lock(&data()->wrt);
 	printf("%zu %d %s\n", (get_time() - data()->start_time), node->id, str);
@@ -23,7 +23,7 @@ void	print_status(char *str, t_philo *node)
 
 static int	sleeping_philo(t_philo *node)
 {
-	if (!data()->dead || (data()->time_to_sleep >= data()->time_to_die))
+	if (!end(&data()->end, &data()->dead) || (data()->time_to_sleep >= data()->time_to_die))
 		return (1);
 	print_status("is sleeping", node);
 	ft_usleep(data()->time_to_sleep);
@@ -32,16 +32,20 @@ static int	sleeping_philo(t_philo *node)
 
 static void	eating(t_philo *node)
 {
-	if (!data()->dead)
+	if (!end(&data()->end, &data()->dead))
 		return ;
 	pthread_mutex_lock(node->r_fork);
 	print_status("has taken a fork", node);
 	pthread_mutex_lock(node->l_fork);
 	print_status("has taken a fork", node);
 	print_status("is eating", node);
-	node->food_eaten++;
-	node->last_meal_time = get_time();
 	ft_usleep(data()->time_to_eat);
+	
+	pthread_mutex_lock(&data()->food);
+	node->last_meal_time = get_time();
+	node->food_eaten++;
+	pthread_mutex_unlock(&data()->food);
+	
 	pthread_mutex_unlock(node->r_fork);
 	pthread_mutex_unlock(node->l_fork);
 }
@@ -56,10 +60,12 @@ void	*routine(void *node)
 		print_status("taken rigth fork", philo);
 		ft_usleep(data()->time_to_die);
 	}
-	while (data()->dead)
+	while (end(&data()->end, &data()->dead))
 	{
 		if ((philo->id % 2) == 0)
 			usleep(100);
+		if (data()->food_need != -1 && philo->food_eaten >= data()->food_need)
+			break;
 		eating(philo);
 		if (sleeping_philo(philo))
 			break ;

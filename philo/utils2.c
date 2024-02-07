@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:25 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 14:28:52 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:27:04 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_usleep(size_t time)
 	size_t	start;
 
 	start = get_time();
-	while ((get_time() - start) < time && data()->dead)
+	while ((get_time() - start) < time && end(&data()->end, &data()->dead))
 		usleep(time / 10);
 }
 
@@ -55,11 +55,11 @@ int	case_one(t_philo *node)
 	return (0);
 }
 
-// int    end(pthread_mutex_t *end, int   *status)
-// {
-//     int tmp = 0;
-//     pthread_mutex_lock(end);
-//     tmp = *status;
-//     pthread_mutex_unlock(end);
-//     return (tmp);
-// }
+int    end(pthread_mutex_t *end, int   *status)
+{
+    int tmp = 0;
+    pthread_mutex_lock(end);
+    tmp = *status;
+    pthread_mutex_unlock(end);
+    return (tmp);
+}

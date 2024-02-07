@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/05 17:23:59 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:08:06 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	init_mutex(void)
 		i++;
 	}
 	pthread_mutex_init(&data()->wrt, NULL);
+	pthread_mutex_init(&data()->end, NULL);
+	pthread_mutex_init(&data()->food, NULL);
 	return (0);
 }
 
