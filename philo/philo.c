@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/07 17:18:31 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:44:33 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,48 @@ static void	eating(t_philo *node)
 {
 	if (!end(&data()->end, &data()->dead))
 		return ;
-	pthread_mutex_lock(node->r_fork);
-	print_status("has taken a fork", node);
-	pthread_mutex_lock(node->l_fork);
-	print_status("has taken a fork", node);
+	
+	if (!(node->id % 2))
+	{
+		pthread_mutex_lock(node->l_fork);
+		print_status("has taken a fork", node);
+		pthread_mutex_lock(node->r_fork);
+		print_status("has taken a fork", node);
+	}
+	else
+	{
+		pthread_mutex_lock(node->r_fork);
+		print_status("has taken a fork", node);
+		pthread_mutex_lock(node->l_fork);
+		print_status("has taken a fork", node);
+	}
+
+	/****************************************/
+	
 	print_status("is eating", node);
 	ft_usleep(data()->time_to_eat);
 	
-	pthread_mutex_lock(&data()->food);
+	/******************************************/
+	pthread_mutex_lock(&data()->meal_eat);
+	
 	node->last_meal_time = get_time();
 	node->food_eaten++;
-	pthread_mutex_unlock(&data()->food);
 	
-	pthread_mutex_unlock(node->r_fork);
-	pthread_mutex_unlock(node->l_fork);
+	pthread_mutex_unlock(&data()->meal_eat);
+	/************************************/
+	
+	if (!(node->id % 2))
+	{
+		pthread_mutex_unlock(node->r_fork);
+		pthread_mutex_unlock(node->l_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(node->l_fork);
+		pthread_mutex_unlock(node->r_fork);
+	}
+	
+
 }
 
 void	*routine(void *node)
@@ -64,8 +92,7 @@ void	*routine(void *node)
 	{
 		if ((philo->id % 2) == 0)
 			usleep(100);
-		if (data()->food_need != -1 && philo->food_eaten >= data()->food_need)
-			break;
+
 		eating(philo);
 		if (sleeping_philo(philo))
 			break ;

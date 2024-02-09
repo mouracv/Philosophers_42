@@ -6,7 +6,7 @@
 #    By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/24 14:05:13 by aleperei          #+#    #+#              #
-#    Updated: 2024/02/07 16:23:25 by aleperei         ###   ########.fr        #
+#    Updated: 2024/02/09 15:44:55 by aleperei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread -pthread
+CFLAGS = -Wall -Werror -Wextra -g -pthread #-fsanitize=thread
 
 RM = rm -f
 
