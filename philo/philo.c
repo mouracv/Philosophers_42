@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/09 15:44:33 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:04:38 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,63 +19,6 @@ void	print_status(char *str, t_philo *node)
 	pthread_mutex_lock(&data()->wrt);
 	printf("%zu %d %s\n", (get_time() - data()->start_time), node->id, str);
 	pthread_mutex_unlock(&data()->wrt);
-}
-
-static int	sleeping_philo(t_philo *node)
-{
-	if (!end(&data()->end, &data()->dead) || (data()->time_to_sleep >= data()->time_to_die))
-		return (1);
-	print_status("is sleeping", node);
-	ft_usleep(data()->time_to_sleep);
-	return (0);
-}
-
-static void	eating(t_philo *node)
-{
-	if (!end(&data()->end, &data()->dead))
-		return ;
-	
-	if (!(node->id % 2))
-	{
-		pthread_mutex_lock(node->l_fork);
-		print_status("has taken a fork", node);
-		pthread_mutex_lock(node->r_fork);
-		print_status("has taken a fork", node);
-	}
-	else
-	{
-		pthread_mutex_lock(node->r_fork);
-		print_status("has taken a fork", node);
-		pthread_mutex_lock(node->l_fork);
-		print_status("has taken a fork", node);
-	}
-
-	/****************************************/
-	
-	print_status("is eating", node);
-	ft_usleep(data()->time_to_eat);
-	
-	/******************************************/
-	pthread_mutex_lock(&data()->meal_eat);
-	
-	node->last_meal_time = get_time();
-	node->food_eaten++;
-	
-	pthread_mutex_unlock(&data()->meal_eat);
-	/************************************/
-	
-	if (!(node->id % 2))
-	{
-		pthread_mutex_unlock(node->r_fork);
-		pthread_mutex_unlock(node->l_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(node->l_fork);
-		pthread_mutex_unlock(node->r_fork);
-	}
-	
-
 }
 
 void	*routine(void *node)
@@ -93,10 +36,12 @@ void	*routine(void *node)
 		if ((philo->id % 2) == 0)
 			usleep(100);
 
-		eating(philo);
+		if (eating(philo))
+			break;
 		if (sleeping_philo(philo))
 			break ;
-		print_status("is thinking", philo);
+		if (philo_think(philo))
+			break;
 	}
 	return (NULL);
 }
@@ -112,6 +57,8 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
+
+// FALTA CORRIGIR CASO AS FUNCOES DE INICIAR AS STRUCTS NAO FUNCIONAREM
 // ./philo 1 800 200 200 - Philosopher should not eat and should die.
 // ./philo 5 800 200 200 - No Philosopher should die.
 // ./philo 5 800 200 200 7 - No Philosopher should die

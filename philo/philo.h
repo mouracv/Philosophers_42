@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/09 14:56:42 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:55:43 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ typedef struct s_box
 }					t_box;
 
 // int    end(pthread_mutex_t *end, int   *status);
+int	sleeping_philo(t_philo *node);
+int	philo_think(t_philo *node);
+int	eating(t_philo *node);
+
 
 // CHECK ARGUMENTS AND ERROR
 void				syntax(int flag);
