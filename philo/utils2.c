@@ -6,22 +6,34 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:25 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/15 15:50:17 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:56:02 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	ft_strlen(const char *str)
+void	syntax(int flag)
 {
-	size_t	i;
-
-	i = 0;
-	if (str[0] == '+')
-		str++;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	if (!flag)
+	{
+		write(2, "Syntax error: ./philo number_of_philosophers ", 45);
+		write(2, "time_to_die time_to_eat time_to_sleep ", 38);
+		write(2, "[number_of_times_each_philosopher_must_eat].\n", 45);
+	}
+	if (flag == 1)
+		write(2, "Syntax error: All the number has to be positive.\n", 49);
+	if (flag == 2)
+		write(2, "Syntax error: Only digits are allowed.\n", 39);
+	if (flag == 3)
+		write(2, "Syntax error: Number of philosophers is not valid.\n", 37);
+	if (flag == 4)
+		write(2, "Syntax error: Arguments has to be bigger than 0.\n", 49);
+	if (flag == 5)
+		write(2, "Error: malloc.\n", 15);
+	if (flag == 6)
+		write(2, "Syntax error: Argument too big.\n", 32);
+	if (flag == 7)
+		write(2, "Error: Failed to create pthread.\n", 33);
 }
 
 // Return the time in milliseconds
@@ -44,22 +56,20 @@ void	ft_usleep(size_t time)
 		usleep(10);
 }
 
-int	case_one(t_philo *node)
+int	end(pthread_mutex_t *end, int *status)
 {
-	node[0].id = 1;
-	node[0].r_fork = &data()->forks[0];
-	node[0].last_meal_time = get_time();
-	if (pthread_create(&data()->tid[0], NULL, &routine, &data()->philos[0]))
-		return (free(data()->forks), free(data()->philos), free(data()->tid),
-			syntax(5), 1);
-	return (0);
+	int	tmp;
+
+	tmp = 0;
+	pthread_mutex_lock(end);
+	tmp = *status;
+	pthread_mutex_unlock(end);
+	return (tmp);
 }
 
-int    end(pthread_mutex_t *end, int   *status)
+void	set_mtx_value(pthread_mutex_t *mtx, int *var, int new_value)
 {
-    int tmp = 0;
-    pthread_mutex_lock(end);
-    tmp = *status;
-    pthread_mutex_unlock(end);
-    return (tmp);
+	pthread_mutex_lock(mtx);
+	*var = new_value;
+	pthread_mutex_unlock(mtx);
 }

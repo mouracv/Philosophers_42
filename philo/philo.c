@@ -6,19 +6,18 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/15 16:04:38 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:03:01 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_status(char *str, t_philo *node)
+// Funcao que  contem a minha struct
+t_box	*data(void)
 {
-	if (!end(&data()->end, &data()->dead))
-		return ;
-	pthread_mutex_lock(&data()->wrt);
-	printf("%zu %d %s\n", (get_time() - data()->start_time), node->id, str);
-	pthread_mutex_unlock(&data()->wrt);
+	static t_box	geral;
+
+	return (&geral);
 }
 
 void	*routine(void *node)
@@ -28,20 +27,32 @@ void	*routine(void *node)
 	philo = (t_philo *)node;
 	if (data()->n_philo == 1)
 	{
-		print_status("taken rigth fork", philo);
+		print_status("has taken a fork", philo);
 		ft_usleep(data()->time_to_die);
 	}
 	while (end(&data()->end, &data()->dead))
 	{
-		if ((philo->id % 2) == 0)
-			usleep(100);
-
+		if ((data()->n_philo % 2))
+		{
+			if (philo->id == data()->n_philo)
+			{
+				usleep(data()->time_to_eat / 2);
+			}
+			else
+				usleep(100);
+		}
+		else
+		{
+			if ((philo->id % 2))
+				usleep(100);
+		}
+		
 		if (eating(philo))
-			break;
+			break ;
 		if (sleeping_philo(philo))
 			break ;
 		if (philo_think(philo))
-			break;
+			break ;
 	}
 	return (NULL);
 }
@@ -57,12 +68,10 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-
-// FALTA CORRIGIR CASO AS FUNCOES DE INICIAR AS STRUCTS NAO FUNCIONAREM
 // ./philo 1 800 200 200 - Philosopher should not eat and should die.
 // ./philo 5 800 200 200 - No Philosopher should die.
 // ./philo 5 800 200 200 7 - No Philosopher should die
-//  and the simulation should stop when every philosopher 
+//  and the simulation should stop when every philosopher
 //  has eaten at least 7 times.
 // ./philo 4 410 200 200 - No Philosopher should die.
 // ./philo 4 310 200 100 - One Philosopher should die.

@@ -6,19 +6,11 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/09 15:31:11 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:03:36 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// Funcao que  contem a minha struct
-t_box	*data(void)
-{
-	static t_box	geral;
-
-	return (&geral);
-}
 
 static int	init_mutex(void)
 {
@@ -33,6 +25,17 @@ static int	init_mutex(void)
 	pthread_mutex_init(&data()->wrt, NULL);
 	pthread_mutex_init(&data()->end, NULL);
 	pthread_mutex_init(&data()->meal_eat, NULL);
+	return (0);
+}
+
+static int	case_one(t_philo *node)
+{
+	node[0].id = 1;
+	node[0].r_fork = &data()->forks[0];
+	node[0].last_meal_time = get_time();
+	if (pthread_create(&data()->tid[0], NULL, &routine, &data()->philos[0]))
+		return (free(data()->forks), free(data()->philos), free(data()->tid),
+			syntax(5), 1);
 	return (0);
 }
 
@@ -51,15 +54,45 @@ int	init_philosophers(t_philo *node)
 	while (++i < (data()->n_philo))
 	{
 		node[i].id = i + 1;
-		node[i].r_fork = &data()->forks[i];
-		if (node[i].id == data()->n_philo)
-			node[i].l_fork = &data()->forks[0];
+		
+		if ((node[i].id % 2))
+		{
+			if (node[i].id == data()->n_philo)
+			{
+				node[i].r_fork = &data()->forks[0];
+				node[i].l_fork = &data()->forks[i];
+			}
+			else
+			{
+				node[i].r_fork = &data()->forks[i + 1];
+				node[i].l_fork = &data()->forks[i];	
+			}
+		}
 		else
-			node[i].l_fork = &data()->forks[i + 1];
+		{
+			if (node[i].id == data()->n_philo)
+			{
+				node[i].r_fork = &data()->forks[0];
+				node[i].l_fork = &data()->forks[i];
+			}
+			else
+			{
+				node[i].r_fork = &data()->forks[i];
+				node[i].l_fork = &data()->forks[i + 1];	
+			}
+
+		}
+		
+		// if (node[i].id == data()->n_philo)
+		// 	node[i].l_fork = &data()->forks[0];
+		// else
+		// 	node[i].l_fork = &data()->forks[i + 1];
+
+
+		
 		node[i].last_meal_time = get_time();
 		if (pthread_create(&data()->tid[i], NULL, &routine, &data()->philos[i]))
-			return (free(data()->forks), free(data()->philos),
-				free(data()->tid), syntax(5), 1);
+			return (quit(), syntax(7), 1);
 	}
 	return (0);
 }

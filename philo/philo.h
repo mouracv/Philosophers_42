@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/15 15:55:43 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/16 13:51:20 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,35 +51,30 @@ typedef struct s_box
 	pthread_mutex_t	meal_eat;
 }					t_box;
 
-// int    end(pthread_mutex_t *end, int   *status);
-int	sleeping_philo(t_philo *node);
-int	philo_think(t_philo *node);
-int	eating(t_philo *node);
-
-
 // CHECK ARGUMENTS AND ERROR
 void				syntax(int flag);
 int					check_args(int ac, char **av);
 
 // INICIATE
 t_box				*data(void);
-int					case_one(t_philo *node);
 int					init_philosophers(t_philo *node);
 int					init_struct(char **argv, int argc);
 
 // MANAGEMENT
 void				cell_guard(void);
 void				*routine(void *node);
+int					eating(t_philo *node);
+int					philo_think(t_philo *node);
+int					sleeping_philo(t_philo *node);
 void				print_status(char *str, t_philo *node);
 int					end(pthread_mutex_t *end, int *status);
-void set_mtx_value(pthread_mutex_t *mtx, int *var, int new_value);
+void				set_mtx_value(pthread_mutex_t *mtx, int *var,
+						int new_value);
 
 // UTILS
 size_t				get_time(void);
-int					ft_isdigit(int nb);
 void				ft_usleep(size_t time);
 int					ft_atoi(const char *nptr);
-size_t				ft_strlen(const char *str);
 void				*ft_calloc(size_t n, size_t size);
 
 // FRRE AND DESTROY THREADS

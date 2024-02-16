@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:03:47 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/15 13:03:41 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/16 13:50:04 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,25 @@ void	quit(void)
 		free(data()->tid);
 }
 
-void set_mtx_value(pthread_mutex_t *mtx, int *var, int new_value)
+void	print_status(char *str, t_philo *node)
 {
-	pthread_mutex_lock(mtx);
-	*var = new_value;
-	pthread_mutex_unlock(mtx);
+	if (!end(&data()->end, &data()->dead))
+		return ;
+	pthread_mutex_lock(&data()->wrt);
+	printf("%zu %d %s\n", (get_time() - data()->start_time), node->id, str);
+	pthread_mutex_unlock(&data()->wrt);
 }
 
 static void	go_to_grave(void)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < data()->n_philo)
 	{
 		pthread_mutex_lock(&data()->meal_eat);
-		if ((get_time() - data()->philos[i].last_meal_time) >= data()->time_to_die)
+		if ((get_time()
+				- data()->philos[i].last_meal_time) >= data()->time_to_die)
 		{
 			pthread_mutex_unlock(&data()->meal_eat);
 			print_status("died", &data()->philos[i]);
@@ -80,7 +83,6 @@ static void	full_philo(void)
 	}
 	if (times == data()->n_philo)
 		set_mtx_value(&data()->end, &data()->dead, 0);
-
 	return ;
 }
 
