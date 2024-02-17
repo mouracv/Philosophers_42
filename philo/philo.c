@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/16 17:03:01 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:19:20 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ void	*routine(void *node)
 				usleep(data()->time_to_eat / 2);
 			}
 			else
-				usleep(100);
+			{
+				if (!(philo->id % 2))
+					usleep(100);
+			}
 		}
 		else
 		{
-			if ((philo->id % 2))
+			if (!(philo->id % 2))
 				usleep(100);
 		}
 		
