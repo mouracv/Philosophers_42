@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:54:04 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/19 16:54:48 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:03:53 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	sleeping_philo(t_philo *node)
 	return (0);
 }
 
-static int ft_abs(int a)
+static int	ft_abs(int a)
 {
 	if (a < 0)
 	{
