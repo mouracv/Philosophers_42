@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:33:25 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/16 12:56:02 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:55:00 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_usleep(size_t time)
 
 	start = get_time();
 	while ((get_time() - start) < time && end(&data()->end, &data()->dead))
-		usleep(10);
+		usleep(100);
 }
 
 int	end(pthread_mutex_t *end, int *status)
