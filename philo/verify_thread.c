@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:03:47 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/16 13:50:04 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:10:42 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ static void	go_to_grave(void)
 				- data()->philos[i].last_meal_time) >= data()->time_to_die)
 		{
 			pthread_mutex_unlock(&data()->meal_eat);
-			print_status("died", &data()->philos[i]);
 			set_mtx_value(&data()->end, &data()->dead, 0);
+			pthread_mutex_lock(&data()->wrt);
+			printf("%zu %d died\n", (get_time() - data()->start_time),
+				data()->philos[i].id);
+			pthread_mutex_unlock(&data()->wrt);
 			break ;
 		}
 		pthread_mutex_unlock(&data()->meal_eat);

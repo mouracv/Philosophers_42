@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/17 12:19:20 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:00:00 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,13 @@ void	*routine(void *node)
 		print_status("has taken a fork", philo);
 		ft_usleep(data()->time_to_die);
 	}
+	if (!(philo->id % 2))
+		ft_usleep(1);
 	while (end(&data()->end, &data()->dead))
 	{
-		if ((data()->n_philo % 2))
-		{
-			if (philo->id == data()->n_philo)
-			{
-				usleep(data()->time_to_eat / 2);
-			}
-			else
-			{
-				if (!(philo->id % 2))
-					usleep(100);
-			}
-		}
-		else
-		{
-			if (!(philo->id % 2))
-				usleep(100);
-		}
-		
-		if (eating(philo))
-			break ;
-		if (sleeping_philo(philo))
-			break ;
-		if (philo_think(philo))
-			break ;
+		eating(philo);
+		sleeping_philo(philo);
+		philo_think(philo);
 	}
 	return (NULL);
 }
@@ -78,6 +59,3 @@ int	main(int argc, char **argv)
 //  has eaten at least 7 times.
 // ./philo 4 410 200 200 - No Philosopher should die.
 // ./philo 4 310 200 100 - One Philosopher should die.
-
-// ./philo 4 500 200 2147483647
-// ./philo 4 214748364732 200 200

@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/16 16:03:36 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:58:28 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,42 +54,11 @@ int	init_philosophers(t_philo *node)
 	while (++i < (data()->n_philo))
 	{
 		node[i].id = i + 1;
-		
-		if ((node[i].id % 2))
-		{
-			if (node[i].id == data()->n_philo)
-			{
-				node[i].r_fork = &data()->forks[0];
-				node[i].l_fork = &data()->forks[i];
-			}
-			else
-			{
-				node[i].r_fork = &data()->forks[i + 1];
-				node[i].l_fork = &data()->forks[i];	
-			}
-		}
+		node[i].r_fork = &data()->forks[i];
+		if (node[i].id == data()->n_philo)
+			node[i].l_fork = &data()->forks[0];
 		else
-		{
-			if (node[i].id == data()->n_philo)
-			{
-				node[i].r_fork = &data()->forks[0];
-				node[i].l_fork = &data()->forks[i];
-			}
-			else
-			{
-				node[i].r_fork = &data()->forks[i];
-				node[i].l_fork = &data()->forks[i + 1];	
-			}
-
-		}
-		
-		// if (node[i].id == data()->n_philo)
-		// 	node[i].l_fork = &data()->forks[0];
-		// else
-		// 	node[i].l_fork = &data()->forks[i + 1];
-
-
-		
+			node[i].l_fork = &data()->forks[i + 1];
 		node[i].last_meal_time = get_time();
 		if (pthread_create(&data()->tid[i], NULL, &routine, &data()->philos[i]))
 			return (quit(), syntax(7), 1);
