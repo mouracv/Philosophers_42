@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:14:58 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/19 15:00:00 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:28:55 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ t_box	*data(void)
 	static t_box	geral;
 
 	return (&geral);
+}
+
+int	sleeping_philo(t_philo *node)
+{
+	if (!end(&data()->end, &data()->dead))
+		return (1);
+	print_status("is sleeping", node);
+	ft_usleep(data()->time_to_sleep);
+	return (0);
 }
 
 void	*routine(void *node)

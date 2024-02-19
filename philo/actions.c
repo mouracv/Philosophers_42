@@ -6,20 +6,11 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:54:04 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/19 17:03:53 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:29:18 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	sleeping_philo(t_philo *node)
-{
-	if (!end(&data()->end, &data()->dead))
-		return (1);
-	print_status("is sleeping", node);
-	ft_usleep(data()->time_to_sleep);
-	return (0);
-}
 
 static int	ft_abs(int a)
 {
