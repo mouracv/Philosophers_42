@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:54:04 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/19 17:29:18 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:04:33 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	philo_think(t_philo *node)
 	if (!end(&data()->end, &data()->dead))
 		return (1);
 	print_status("is thinking", node);
-	usleep(100 + ft_abs(data()->time_to_sleep - data()->time_to_eat) * 1000);
+	usleep(500 + ft_abs(data()->time_to_sleep - data()->time_to_eat) * 1000);
 	return (0);
 }
 

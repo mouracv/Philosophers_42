@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:59:52 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/16 13:50:59 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:00:55 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,6 @@ static int	ft_isdigit(int nb)
 		return (1);
 	else
 		return (0);
-}
-
-int	ft_atoi(const char *nptr)
-{
-	int		i;
-	int		sinal;
-	int		num;
-	char	*str;
-
-	str = (char *)nptr;
-	i = 0;
-	num = 0;
-	sinal = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sinal = -1;
-		i++;
-	}
-	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
-	{
-		num = (num * 10) + (str[i] - '0');
-		i++;
-	}
-	return (num * sinal);
-}
-
-static size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (str[0] == '+')
-		str++;
-	while (str[i] != '\0')
-		i++;
-	return (i);
 }
 
 int	check_args(int ac, char **av)
@@ -81,8 +42,6 @@ int	check_args(int ac, char **av)
 				return (syntax(2), 1);
 			sub++;
 		}
-		if (ft_strlen(*str) > 10)
-			return (syntax(6), 1);
 		str++;
 	}
 	return (0);
@@ -99,4 +58,34 @@ void	*ft_calloc(size_t n, size_t size)
 		return (NULL);
 	memset(dup, 0, total);
 	return (dup);
+}
+
+static long	check_limits(long num)
+{
+	if (num > INT_MAX || num < INT_MIN)
+		return (-1);
+	return (num);
+}
+
+long	ft_atoi(const char *str)
+{
+	int		sn;
+	long	num;
+
+	sn = 1;
+	num = 0;
+	while ((*str >= '\t' && *str <= '\r') || *str == ' ')
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		sn = (*str == '+') - (*str == '-');
+		str++;
+	}
+	while (*str && ft_isdigit(*str))
+	{
+		num = num * 10 + *str - '0';
+		str++;
+	}
+	num = check_limits(num * sn);
+	return (num);
 }

@@ -6,13 +6,14 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:15:55 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/16 13:51:20 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:00:49 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <limits.h>
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -74,7 +75,7 @@ void				set_mtx_value(pthread_mutex_t *mtx, int *var,
 // UTILS
 size_t				get_time(void);
 void				ft_usleep(size_t time);
-int					ft_atoi(const char *nptr);
+long				ft_atoi(const char *str);
 void				*ft_calloc(size_t n, size_t size);
 
 // FRRE AND DESTROY THREADS

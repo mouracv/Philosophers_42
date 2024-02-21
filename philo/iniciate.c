@@ -6,7 +6,7 @@
 /*   By: aleperei <aleperei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:15:50 by aleperei          #+#    #+#             */
-/*   Updated: 2024/02/19 14:58:28 by aleperei         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:57:12 by aleperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,18 @@ int	init_struct(char **argv, int argc)
 	data()->n_philo = ft_atoi(argv[1]);
 	if (data()->n_philo > 200)
 		return (syntax(3), 1);
+	data()->food_need = -1;
+	if (ft_atoi(argv[2]) < 0 || ft_atoi(argv[3]) < 0 || ft_atoi(argv[4]) < 0)
+		return (syntax(6), 1);
 	data()->time_to_die = (size_t)ft_atoi(argv[2]);
 	data()->time_to_eat = (size_t)ft_atoi(argv[3]);
 	data()->time_to_sleep = (size_t)ft_atoi(argv[4]);
 	if (argc == 6)
+	{
 		data()->food_need = ft_atoi(argv[5]);
-	else
-		data()->food_need = -1;
+		if (data()->food_need < 0)
+			return (syntax(6), 1);
+	}
 	if (!data()->n_philo || !data()->time_to_die || !data()->time_to_eat
 		|| !data()->time_to_sleep || !data()->food_need)
 		return (syntax(4), 1);
